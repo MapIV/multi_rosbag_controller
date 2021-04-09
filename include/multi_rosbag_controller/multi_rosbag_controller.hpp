@@ -17,7 +17,7 @@ public:
   void openRosbag(std::vector<std::string> rosbag_names);
   bool findTopic(std::string topic_name);
   bool setTopic(std::string topic_name);
-  bool selectTopicPriority(std::string prior_topic, std::string pos_topic);
+  int selectTopicPriority(std::string prior_topic, std::string pos_topic);
   void addQueries(rosbag::View& view);
   void resetTopic();
 

@@ -83,16 +83,20 @@ bool MultiRosbagController::setTopic(std::string topic_name)
   return true;
 }
 
-bool MultiRosbagController::selectTopicPriority(std::string prior_topic, std::string post_topic)
+int MultiRosbagController::selectTopicPriority(std::string prior_topic, std::string post_topic)
 {
-  if (!setTopic(prior_topic))
+  if (setTopic(prior_topic))
   {
-    if (!setTopic(post_topic))
-    {
-      return false;
-    }
+    return 0;
   }
-  return true;
+  else if (setTopic(post_topic))
+  {
+    return 1;
+  }
+  else
+  {
+    return -1;
+  }
 }
 
 void MultiRosbagController::addQueries(rosbag::View& view)
