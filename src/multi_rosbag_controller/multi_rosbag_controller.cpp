@@ -7,12 +7,10 @@
 
 MultiRosbagController::MultiRosbagController()
 {
-  points_corrected_topic_name = std::string("/map4_points_corrected");
 }
 
 MultiRosbagController::MultiRosbagController(std::vector<std::string> rosbag_names)
 {
-  points_corrected_topic_name = std::string("/map4_points_corrected");
   openRosbag(rosbag_names);
 }
 
@@ -131,7 +129,7 @@ void MultiRosbagController::setLidarTopics(std::string config)
     YAML::Node conf = YAML::LoadFile(config);
 
     // LiDAR config
-    points_topic = conf["lidar"]["points_topic"].as<std::string>();
+    points_topic = conf["lidar"]["topic_name"].as<std::string>();
     setPointsTopic(points_topic);
     if (is_first_)
     {
@@ -151,7 +149,7 @@ void MultiRosbagController::setLidarTopics(std::string config)
     use_extra_lidar = conf["lidar"]["use_extra_lidar"].as<bool>();
     if (use_extra_lidar)
     {
-      extra_points_topic = conf["lidar"]["extra_lidar"]["points_topic"].as<std::string>();
+      extra_points_topic = conf["lidar"]["extra_lidar"]["topic_name"].as<std::string>();
       setTopic(extra_points_topic);
 
       if (topic_type_ == 2)
