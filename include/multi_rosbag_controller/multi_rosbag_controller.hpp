@@ -4,8 +4,6 @@
 #include <vector>
 #include <string>
 
-#include <yaml-cpp/yaml.h>
-
 #include <rosbag/bag.h>
 #include <rosbag/view.h>
 
