@@ -26,7 +26,6 @@ public:
 private:
   // Variables
   int num_rosbag_;
-  int topic_type_;
   std::vector<rosbag::Bag> rosbags_;
   std::vector<std::string> topics_;
   std::vector<std::set<std::string>> topic_list_;
