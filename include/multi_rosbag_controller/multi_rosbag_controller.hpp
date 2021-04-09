@@ -18,20 +18,15 @@ public:
 
   void openRosbag(std::vector<std::string> rosbag_names);
   bool findTopic(std::string topic_name);
-  void setTopic(std::string topic_name);
-  void setPointsTopic(std::string topic_name);
+  bool setTopic(std::string topic_name);
+  bool selectTopicPriority(std::string prior_topic, std::string pos_topic);
   void addQueries(rosbag::View& view);
   void resetTopic();
-  void setLidarTopics(std::string config);
-  bool getIsFirst();
-  int getTopicType();
 
 private:
   // Variables
   int num_rosbag_;
   int topic_type_;
-  bool is_first_;
-  std::string points_corrected_topic_name;
   std::vector<rosbag::Bag> rosbags_;
   std::vector<std::string> topics_;
   std::vector<std::set<std::string>> topic_list_;

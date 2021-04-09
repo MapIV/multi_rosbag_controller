@@ -73,35 +73,26 @@ bool MultiRosbagController::findTopic(std::string topic_name)
   return true;
 }
 
-void MultiRosbagController::setTopic(std::string topic_name)
+bool MultiRosbagController::setTopic(std::string topic_name)
 {
   if (!findTopic(topic_name))
   {
-    std::cerr << "\033[31mError: Cannot find topic: " << topic_name << "\033[m" << std::endl;
-    exit(4);
+    return false;
   }
   topics_.push_back(topic_name);
+  return true;
 }
 
-void MultiRosbagController::setPointsTopic(std::string topic_name)
+bool MultiRosbagController::selectTopicPriority(std::string prior_topic, std::string post_topic)
 {
-  // Set topic_name if it exists, otherwise set /points_raw
-  if (findTopic(topic_name))
+  if (!setTopic(prior_topic))
   {
-    topics_.push_back(topic_name);
-    is_first_ = true;
+    if (!setTopic(post_topic))
+    {
+      return false;
+    }
   }
-  else if (findTopic(points_corrected_topic_name))
-  {
-    topics_.push_back(points_corrected_topic_name);
-    is_first_ = false;
-  }
-  else
-  {
-    std::cerr << "\033[31mError: Cannot find topic: " << topic_name << " and " << points_corrected_topic_name
-              << "\033[m" << std::endl;
-    exit(4);
-  }
+  return true;
 }
 
 void MultiRosbagController::addQueries(rosbag::View& view)
@@ -115,63 +106,4 @@ void MultiRosbagController::addQueries(rosbag::View& view)
 void MultiRosbagController::resetTopic()
 {
   topics_.clear();
-}
-
-void MultiRosbagController::setLidarTopics(std::string config)
-{
-  std::string points_topic;
-  std::string extra_points_topic;
-  bool use_extra_lidar;
-  std::string difop_topic, extra_difop_topic;
-
-  try
-  {
-    YAML::Node conf = YAML::LoadFile(config);
-
-    // LiDAR config
-    points_topic = conf["lidar"]["topic_name"].as<std::string>();
-    setPointsTopic(points_topic);
-    if (is_first_)
-    {
-      topic_type_ = conf["lidar"]["topic_type"].as<int>();
-    }
-    else
-    {
-      topic_type_ = 1;  // PointCloud2 map4_points_corrected
-    }
-
-    if (topic_type_ == 2)
-    {
-      difop_topic = conf["lidar"]["difop_topic"].as<std::string>();
-      setTopic(difop_topic);
-    }
-
-    use_extra_lidar = conf["lidar"]["use_extra_lidar"].as<bool>();
-    if (use_extra_lidar)
-    {
-      extra_points_topic = conf["lidar"]["extra_lidar"]["topic_name"].as<std::string>();
-      setTopic(extra_points_topic);
-
-      if (topic_type_ == 2)
-      {
-        extra_difop_topic = conf["lidar"]["extra_lidar"]["difop_topic"].as<std::string>();
-        setTopic(extra_difop_topic);
-      }
-    }
-  }
-  catch (YAML::Exception& e)
-  {
-    std::cerr << "\033[31mError: " << e.what() << "\033[m" << std::endl;
-    exit(3);
-  }
-}
-
-bool MultiRosbagController::getIsFirst()
-{
-  return is_first_;
-}
-
-int MultiRosbagController::getTopicType()
-{
-  return topic_type_;
 }
