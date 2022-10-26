@@ -27,3 +27,14 @@ include_directories(
 add_library(multi_rosbag_controller src/multi_rosbag_controller/multi_rosbag_controller.cpp)
 target_link_libraries(multi_rosbag_controller ${catkin_LIBRARIES})
 add_dependencies(multi_rosbag_controller ${catkin_EXPORTED_TARGETS})
+
+install(DIRECTORY include/multi_rosbag_controller/
+  DESTINATION include/multi_rosbag_controller/
+  FILES_MATCHING PATTERN "*.hpp"
+)
+
+install(TARGETS multi_rosbag_controller
+  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
