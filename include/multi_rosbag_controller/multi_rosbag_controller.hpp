@@ -18,6 +18,8 @@ public:
   bool findTopic(std::string topic_name);
   bool setTopic(std::string topic_name);
   int selectTopicPriority(std::string prior_topic, std::string pos_topic);
+  int selectTopicPriority(std::vector<std::string> topics);
+  void setLiDARPriorTopic();
   void addQueries(rosbag::View& view);
   void resetTopic();
 
