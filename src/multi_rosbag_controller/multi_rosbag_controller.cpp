@@ -99,6 +99,19 @@ int MultiRosbagController::selectTopicPriority(std::string prior_topic, std::str
   }
 }
 
+int MultiRosbagController::selectTopicPriority(std::vector<std::string> topics)
+{
+  for(int i=0; i< topics.size();i++)
+  {
+    if (setTopic(topics[i]))
+    {
+      return i;
+    }
+  }
+
+  return -1;
+}
+
 void MultiRosbagController::addQueries(rosbag::View& view)
 {
   for (int bag_id = 0; bag_id < num_rosbag_; bag_id++)
