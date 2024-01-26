@@ -14,9 +14,9 @@ public:
   MultiRosbagController(std::vector<std::string> rosbag_names);
   ~MultiRosbagController();
 
-  void openRosbag(std::vector<std::string> rosbag_names);
-  bool findTopic(std::string topic_name);
-  bool setTopic(std::string topic_name);
+  void openRosbag(const std::vector<std::string>& rosbag_names);
+  bool findTopic(const std::string& topic_name, const bool require_all_rosbags = true);
+  bool setTopic(const std::string& topic_name, const bool require_all_rosbags = true);
   int selectTopicPriority(std::string prior_topic, std::string pos_topic);
   int selectTopicPriority(std::vector<std::string> topics);
   void setLiDARPriorTopic();

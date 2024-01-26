@@ -14,7 +14,7 @@ MultiRosbagController::MultiRosbagController(std::vector<std::string> rosbag_nam
   openRosbag(rosbag_names);
 }
 
-void MultiRosbagController::openRosbag(std::vector<std::string> rosbag_names)
+void MultiRosbagController::openRosbag(const std::vector<std::string>& rosbag_names)
 {
   num_rosbag_ = rosbag_names.size();
   rosbags_.resize(num_rosbag_);
@@ -39,7 +39,7 @@ MultiRosbagController::~MultiRosbagController()
   }
 }
 
-bool MultiRosbagController::findTopic(std::string topic_name)
+bool MultiRosbagController::findTopic(const std::string& topic_name, const bool require_all_rosbags)
 {
   // Collect all topic names in this rosbag
   if (!is_topic_listed_)
@@ -66,16 +66,26 @@ bool MultiRosbagController::findTopic(std::string topic_name)
   {
     if (topic_list_[bag_id].find(topic_name) == topic_list_[bag_id].end())
     {
-      return false;
+      if (require_all_rosbags)
+      {
+        return false;
+      }
+    }
+    else
+    {
+      if (!require_all_rosbags)
+      {
+        return true;
+      }
     }
   }
 
   return true;
 }
 
-bool MultiRosbagController::setTopic(std::string topic_name)
+bool MultiRosbagController::setTopic(const std::string& topic_name, const bool require_all_rosbags)
 {
-  if (!findTopic(topic_name))
+  if (!findTopic(topic_name, require_all_rosbags))
   {
     return false;
   }
