@@ -7,10 +7,12 @@
 
 MultiRosbagController::MultiRosbagController()
 {
+  verbose_ = true;
 }
 
-MultiRosbagController::MultiRosbagController(std::vector<std::string> rosbag_names)
+MultiRosbagController::MultiRosbagController(std::vector<std::string> rosbag_names, const bool verbose)
 {
+  verbose_ = verbose;
   openRosbag(rosbag_names);
 }
 
@@ -23,10 +25,12 @@ void MultiRosbagController::openRosbag(const std::vector<std::string>& rosbag_na
   for (int i = 0; i < num_rosbag_; i++)
   {
     rosbags_[i].open(rosbag_names[i], rosbag::bagmode::Read);
-    std::cout << "Opened : " << rosbag_names[i] << std::endl;
+    if (verbose_)
+      std::cout << "Opened : " << rosbag_names[i] << std::endl;
   }
 
-  std::cout << "ROSBAG count: " << num_rosbag_ << std::endl;
+  if (verbose_)
+    std::cout << "ROSBAG count: " << num_rosbag_ << std::endl;
 
   is_topic_listed_ = false;
 }

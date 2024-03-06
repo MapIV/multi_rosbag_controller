@@ -11,7 +11,7 @@ class MultiRosbagController
 {
 public:
   MultiRosbagController();
-  MultiRosbagController(std::vector<std::string> rosbag_names);
+  MultiRosbagController(std::vector<std::string> rosbag_names, const bool verbose = false);
   ~MultiRosbagController();
 
   void openRosbag(const std::vector<std::string>& rosbag_names);
@@ -22,6 +22,10 @@ public:
   void setLiDARPriorTopic();
   void addQueries(rosbag::View& view);
   void resetTopic();
+  void setVerbose(const bool verbose)
+  {
+    verbose_ = verbose;
+  }
 
 private:
   // Variables
@@ -30,6 +34,7 @@ private:
   std::vector<std::string> topics_;
   std::vector<std::set<std::string>> topic_list_;
   bool is_topic_listed_;
+  bool verbose_;
 };
 
 #endif
